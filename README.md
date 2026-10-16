@@ -1,4 +1,4 @@
-# Mellow-Fly-dp5
+# Mellow-Fly-DP5
 This writeup is my personal implementation of the Mellow Fly DP5 board. I guarantee you it will not be like yours, but you are free to use the information to assist you in implementing it on your printer. My setup is as follows:
 
     V0.2-ish printer I got used
@@ -203,3 +203,12 @@ gcode:
     SET_LED LED=btt_mini12864 RED=1 GREEN=1 BLUE=1 INDEX=3
 ```
 
+# Links
+
+    - Mellow's documentataion for the DP5 [](https://mellow-3d.github.io/fly_DP5.html)
+    - Mellow Product documentation for the DP5 [](https://mellow.klipper.cn/docs/ProductDoc/MainBoard/fly-d/fly-dp5/)
+        This is partially in Chinese and Chrome didn't want to translate some of it :-)
+
+# Thanks
+Xiar for the information I couldn't locate
+ZeroTacos for telling me I should write this up
