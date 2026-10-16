@@ -25,4 +25,15 @@ Also I placed the heat sinks on the back side under the LEDs because the tallest
 
 These are the ports that I used for the various parts of the printer:
 
-<img src="pictures/Ports Used.png" width=35% height=35% alt="Poirts used on my v0">
+<img src="pictures/Ports Used.png" width=75% height=35% alt="Poirts used on my v0">
+
+    B motor is plugged into stepper 0 with Diag1 jumpered
+    A motor is plugged into stepper 1 with Diag2 jumpered
+    Z motor is plugged into stepper 2 with Diag3 left unjumpered
+    Power from PSU is plugged into the Power port
+    Bed heater is plugged into the port labelled with PC7
+    Bed thermistor is plugged into the BED-Temp port
+    The CAN +24v/GND are plugged into the power port indicated by the callout
+    The Z-Endstop switch is plugged into the appropriate port
+    The BTT 12864 display that I have connected is plugged into the EXP1/EXP2 ports as expected
+
