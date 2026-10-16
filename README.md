@@ -1,4 +1,6 @@
 # Mellow-Fly-DP5
+![err - the board in question](<pictures/dp5 with 2209.avif>)
+
 This writeup is my personal implementation of the Mellow Fly DP5 board. I guarantee you it will not be like yours, but you are free to use the information to assist you in implementing it on your printer. My setup is as follows:
 
     V0.2-ish printer I got used
@@ -26,16 +28,15 @@ Before plugging in the drivers in their slots, you will need to plug the motors 
 
 
 
->
 
 Also I placed the heat sinks on the back side under the LEDs because the tallest part of the driver chip side is the driver itself and the heat sink would be too wobbly in my opinion. I do not think the LEDs will get too hot, and the driver PCB has a heat plane built in so I believe this will work ok.
 
-<img src="pictures/2209front.jpg" width=35% height=35% alt="Front of 2209-RGB">  <img src="pictures/2209back.jpg" width=35% height=35% alt="back of 2209-RGB"
+<img src="pictures/2209front.jpg" width=35% height=35% alt="Front of 2209-RGB">  <img src="pictures/2209back.jpg" width=35% height=35% alt="back of 2209-RGB">
 
 ## Ports used on the DP5
 These are the ports that I used for the various parts of the printer:
 
-<img src="pictures/Ports Used.png" width=75% height=35% alt="Poirts used on my v0">
+<img src="pictures/Ports Used.png" width=75% height=35% alt="Ports used on my v0">
 
     B motor is plugged into stepper 0 with Diag1 jumpered
     A motor is plugged into stepper 1 with Diag2 jumpered
