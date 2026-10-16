@@ -26,10 +26,13 @@ Before plugging in the drivers in their slots, you will need to plug the motors 
 
 
 
-<img src="pictures/2209front.jpg" width=35% height=35% alt="Front of 2209-RGB">  <img src="pictures/2209back.jpg" width=35% height=35% alt="back of 2209-RGB">
+>
 
 Also I placed the heat sinks on the back side under the LEDs because the tallest part of the driver chip side is the driver itself and the heat sink would be too wobbly in my opinion. I do not think the LEDs will get too hot, and the driver PCB has a heat plane built in so I believe this will work ok.
 
+<img src="pictures/2209front.jpg" width=35% height=35% alt="Front of 2209-RGB">  <img src="pictures/2209back.jpg" width=35% height=35% alt="back of 2209-RGB"
+
+## Ports used on the DP5
 These are the ports that I used for the various parts of the printer:
 
 <img src="pictures/Ports Used.png" width=75% height=35% alt="Poirts used on my v0">
@@ -52,6 +55,7 @@ The configuration file that I used started as the SKR Pico one. I had settings i
 
 The parts that I changed are listed below.  Bear in mind that your settings and values could and probably will be different in many cases so do not just copy and paste what I have included here.
 
+## Board pins
 I included the board pins portion of the mellow config from their documentation:
 
 ```[board_pins]
@@ -86,6 +90,7 @@ aliases:
     SERVO=PA8   # BL Touch servo pin
 ```
 
+## MCU call out
 This made the rest of the config easier to get correct.  I included the MCU in the config next:
 
 ```[mcu]
@@ -93,6 +98,7 @@ serial: /dev/serial/by-id/usb-Klipper_stm32f072xb_3B0023000457434630323420-if00
 restart_method: command
 ```
 
+## Main Config changes
 The next portions of the config have been trimmed to only include the parts that are necessary to make the config work. If a setting was not needed, I have included it here with a comment to indicate it was not needed.
 
 ```[stepper_x]
