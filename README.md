@@ -210,5 +210,5 @@ gcode:
     This is partially in Chinese and Chrome didn't want to translate some of it :-)
 
 # Thanks
-Xiar for the information I couldn't locate.
-ZeroTacos for telling me I should write this up.
+- Xiar for the information I couldn't locate.
+- ZeroTacos for telling me I should write this up.
