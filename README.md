@@ -4,7 +4,15 @@
 The board I am using in my v0.2 printer [Mellow Fly -DP5](https://www.aliexpress.us/item/3256806079050403.html)
 It comes with 5 TC2209-RGB drivers that have 5 RGB LEDs on them each. It came with 5 heat sinks for the drivers as well.
 
-This writeup is my personal implementation of the Mellow Fly DP5 board. I guarantee you it will not be like yours, but you are free to use the information to assist you in implementing it on your printer. My setup is as follows:
+The Mellow Fly DP5 is a small, 5 independent driver MCU board comparible to the SKR Pico board used frequently in the Voron V0. It is a bit larger than the Pico but comes with not only CAN on board, but also support for the normal 12864 remote display. The DP5 does not have a dedicated RGB port if you are looking for that. The built in RGB for the Drivers replaces that.  More on that setup later.
+
+I have the board currently installed in the printer, so comparing it with the size of a Pico will have to come later. It's still a pretty small board, but not as small as a pico. It's closer in size to a Raspberry Pi I think.
+
+As for a difference in cost, the set I got from Ali Express (link above) cost me right at $30 but included the 2209 driver step sticks. The DP5 does support other driver types - Mellow also has 2240 drivers in the same form factor on their site for sale. The 2209 drivers are listed for close to $3 per stick, while the 2240s are a little more than double that.
+
+One feature that I like on the DP5 over the Pico is that the drivers are all separate. The pico has 2 Z motor ports on the same stepper - like most Ender style boards do. This means the DP5 can handle 5 totally independent motors where the pico cannot.
+
+Keep in mind, this writeup is my personal implementation of the Mellow Fly DP5 board. I guarantee you it will not be like yours, but you are free to use the information to assist you in implementing it on your printer. My setup is as follows:
 
     V0.2-ish printer I got used in a box in pieces
     Tulip gantry
@@ -13,7 +21,6 @@ This writeup is my personal implementation of the Mellow Fly DP5 board. I guaran
 
 There is nothing wrong with the Pico, I just saw the DP5 and wanted to test it.
 
-The Mellow Fly DP5 is a small, 5 independent driver MCU board comparible to the SKR Pico board used frequently in the Voron V0. It is a bit larger than the Pico but comes with not only CAN on board, but also support for the normal 12874 remote display. The DP5 does not have a dedicated RGB port if you are looking for that. The built in RGB for the Drivers replaces that.  More on that setup later.
 
 # Replacement process
 ## Important Information
@@ -21,6 +28,10 @@ The DP5 has 5 independent drivers, but only 4 of them support Diag pins and can 
 
 ## Flashing the board
 My copy of the DP5 came with katapult flashed on the board already. I was able to follow Esoterical's documentation for flashing the board as he has the info for the DP5 already there. It's not very different from the SKR Pico, so flashing it was extremely simple. Once I had the board flashed, I was able to start the process os systematically unplugging from the Pico and then plugging right into the DP5.
+
+If, on thechance your board does not come pre-flashed with katapult, you can use Esoterical's CANBUS guide to flash the board. Start here and follow his instructions. It's a good guide and should get you going. [Mainboard Flashing](https://canbus.esoterical.online/mainboard_flashing.html)
+
+The information for how to configure katapult and klipper are shown here: [Configuration for Katapult/Klipper compilation](https://canbus.esoterical.online/mainboard_flashing/common_hardware/Mellow%20Fly-D5P/README.html)
 
 ## Replacing the board
 When I went to replace the Pico with the DP5 I tried to be as plug and play as possible. I left the Pico in it's place and put plugs in the ports that matched on the DP5.
@@ -61,7 +72,8 @@ The parts that I changed are listed below.  Bear in mind that your settings and 
 ## Board pins
 I included the board pins portion of the mellow config from their documentation:
 
-```[board_pins]
+```
+[board_pins]
 aliases:
     # Stepper drivers
     D0_EN=PC2,   D0_STEP=PC15,  D0_DIR=PC14,  D0_CS=PC13, D0_STOP=PB4,  # X
@@ -96,7 +108,8 @@ aliases:
 ## MCU call out
 This made the rest of the config easier to get correct.  I included the MCU in the config next:
 
-```[mcu]
+```
+[mcu]
 serial: /dev/serial/by-id/usb-Klipper_stm32f072xb_3B0023000457434630323420-if00
 restart_method: command
 ```
@@ -104,7 +117,8 @@ restart_method: command
 ## Main Config changes
 The next portions of the config have been trimmed to only include the parts that are necessary to make the config work. If a setting was not needed, I have included it here with a comment to indicate it was not needed.
 
-```[stepper_x]
+```
+[stepper_x]
 step_pin: D0_STEP
 dir_pin: D0_DIR
 enable_pin: !D0_EN
@@ -154,7 +168,8 @@ The DP5 doesn't have a dedicated RGB port. I have more information on using RGBs
 
 This config is used with the LED Effects part of the regular Voron configuration. I did not include that in my writeup.
 
-```[neopixel rgb1]
+```
+[neopixel rgb1]
 pin: PB7
 chain_count: 25
 color_order: GRB
@@ -169,7 +184,8 @@ The Mini-12864 display is one that I had on hand and wanted to see if it would w
 As I am old it's a better display for me than the tiny OLED display that normally comes with a v0. I commented out the beeper pin because for some reason it was not happy due to the EXP definitions and I didn't want ot active anyway.
 
 
-```[display]
+```
+[display]
 lcd_type: uc1701
 cs_pin: EXP1_3
 a0_pin: EXP1_4
