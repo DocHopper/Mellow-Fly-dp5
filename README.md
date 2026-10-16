@@ -19,4 +19,4 @@ When I went to replace the Pico with the DP5 I tried to be as plug and play as p
 
 Before plugging in the drivers in their slots, you will need to plug the motors in because the heat sinks that come with the TC2209-RGB are very large 
 
-<img src="pictures/2209front.jpg" width=50% height=50% alt="Front of 2209-RGB">  <img src="pictures/2209back.jpg" width=50% height=50% alt="back of 2209-RGB">
+<img src="pictures/2209front.jpg" width=35% height=35% alt="Front of 2209-RGB">  <img src="pictures/2209back.jpg" width=35% height=35% alt="back of 2209-RGB">
