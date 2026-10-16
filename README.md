@@ -1,11 +1,12 @@
 # Mellow-Fly-DP5
 ![err - the board in question](<pictures/dp5 with 2209.avif>)
+
 The board I am using in my v0.2 printer [Mellow Fly -DP5](https://www.aliexpress.us/item/3256806079050403.html)
 It comes with 5 TC2209-RGB drivers that have 5 RGB LEDs on them each. It came with 5 heat sinks for the drivers as well.
 
 This writeup is my personal implementation of the Mellow Fly DP5 board. I guarantee you it will not be like yours, but you are free to use the information to assist you in implementing it on your printer. My setup is as follows:
 
-    V0.2-ish printer I got used
+    V0.2-ish printer I got used in a box in pieces
     Tulip gantry
     Intel Nuc host -> BTT U2C board -> EBB36 CAN setup
     Mellow Fly DP5 controller replacing an SKR Pico that came with the parts
