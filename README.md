@@ -1,5 +1,7 @@
 # Mellow-Fly-DP5
 ![err - the board in question](<pictures/dp5 with 2209.avif>)
+The board I am using in my v0.2 printer [Mellow Fly -DP5](https://www.aliexpress.us/item/3256806079050403.html)
+It comes with 5 TC2209-RGB drivers that have 5 RGB LEDs on them each. It came with 5 heat sinks for the drivers as well.
 
 This writeup is my personal implementation of the Mellow Fly DP5 board. I guarantee you it will not be like yours, but you are free to use the information to assist you in implementing it on your printer. My setup is as follows:
 
@@ -25,7 +27,6 @@ When I went to replace the Pico with the DP5 I tried to be as plug and play as p
 Before plugging in the drivers in their slots, you will need to plug the motors in because the heat sinks that come with the TC2209-RGB are very large and the plugs can't be plugged in with the drivers in place. 
 
 <img src="pictures/not much room.jpg" width=35% height=35% alt="Not a lot of space for a cable">  <img src="pictures/not much room2.jpg" width=35% height=35% alt="not a lot of space there...">
-
 
 
 
