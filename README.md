@@ -205,9 +205,9 @@ gcode:
 
 # Links
 
-    - Mellow's documentation for the DP5 ![github](>https://mellow-3d.github.io/fly_DP5.html)
-    - Mellow Product documentation for the DP5 ![docs](https://mellow.klipper.cn/docs/ProductDoc/MainBoard/fly-d/fly-dp5/)
-        This is partially in Chinese and Chrome didn't want to translate some of it :-)
+- Mellow's documentation for the DP5 [github](https://mellow-3d.github.io/fly_DP5.html)
+- Mellow Product documentation for the DP5 [docs](https://mellow.klipper.cn/docs/ProductDoc/MainBoard/fly-d/fly-dp5/)
+    This is partially in Chinese and Chrome didn't want to translate some of it :-)
 
 # Thanks
 Xiar for the information I couldn't locate.
