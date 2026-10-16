@@ -6,7 +6,9 @@ It comes with 5 TC2209-RGB drivers that have 5 RGB LEDs on them each. It came wi
 
 The Mellow Fly DP5 is a small, 5 independent driver MCU board comparible to the SKR Pico board used frequently in the Voron V0. It is a bit larger than the Pico but comes with not only CAN on board, but also support for the normal 12864 remote display. The DP5 does not have a dedicated RGB port if you are looking for that. The built in RGB for the Drivers replaces that.  More on that setup later.
 
-I have the board currently installed in the printer, so comparing it with the size of a Pico will have to come later. It's still a pretty small board, but not as small as a pico. It's closer in size to a Raspberry Pi I think.
+Here is a picture showing the size comparison with a Pico and a Pi and the DP5. The DP5 is only slightly bigger than the other 2. I feel that using the onboard CAN interface will make a huge difference in the amount of room available on the back of the printer. Especially since I use an external host and not a Pi.
+
+![Pi, Pic, and DP5](<pictures/size comparison.jpg>)
 
 As for a difference in cost, the set I got from Ali Express (link above) cost me right at $30 but included the 2209 driver step sticks. The DP5 does support other driver types - Mellow also has 2240 drivers in the same form factor on their site for sale. The 2209 drivers are listed for close to $3 per stick, while the 2240s are a little more than double that.
 
