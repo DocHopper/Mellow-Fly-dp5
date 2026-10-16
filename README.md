@@ -25,4 +25,4 @@ Also I placed the heat sinks on the back side under the LEDs because the tallest
 
 These are the ports that I used for the various parts of the printer:
 
-<img src="pictures/Ports Used.png" width=35% height=35% alt="Poirts used on my v0">
+<img src="pictures/Ports Used.png" width=75% height=75% alt="Poirts used on my v0">
