@@ -6,9 +6,13 @@ It comes with 5 TC2209-RGB drivers that have 5 RGB LEDs on them each. It came wi
 
 The Mellow Fly DP5 is a small, 5 independent driver MCU board comparible to the SKR Pico board used frequently in the Voron V0. It is a bit larger than the Pico but comes with not only CAN on board, but also support for the normal 12864 remote display. The DP5 does not have a dedicated RGB port if you are looking for that. The built in RGB for the Drivers replaces that.  More on that setup later.
 
-<img src="pictures/dp5.webp" width=40% height=40% alt="Pic of fly dp5">  <img src="pictures/FLY-DP5-pins.jpg" width=40% height=40% alt="connector names and pins">
+<img src="pictures/dp5.webp" alt="Pic of fly dp5">
+Picture of Fly DP5
 
-Here is a picture showing the size comparison with a Pico and a Pi and the DP5. The DP5 is only slightly bigger than the other 2. I feel that using the onboard CAN interface will make a huge difference in the amount of room available on the back of the printer. Especially since I use an external host and not a Pi.
+<img src="pictures/FLY-DP5-pins.jpg" alt="connector names and pins">
+Fly DP5 connectors
+
+Here is a picture showing the size comparison with a Pico and a Pi and the DP5. The DP5 is only slightly bigger than the other 2. I feel that using the onboard CAN interface will make a huge difference in the amount of room available on the back of the printer. Especially since I use an external host and not a Pi. One thing to note on the DP5 is that the connectors are all top-in plugs while the Pico are side-in plugs for most things. This will help offset the added footprint for the connectors.
 
 ![Pi, Pic, and DP5](<pictures/size comparison.jpg>)
 
@@ -185,7 +189,7 @@ The Rest of the configuration is - in my estimation - optional.
 # Optional Configuration
 ## TC2209-RGB Driver LEDs
 
-The DP5 doesn't have a dedicated RGB port. I have more information on using RGBs coming in a later update that will appear here, but there is a RGB pin you can use to enable the RGBs that are built into the TC-2209-RGB steppers that came with the board.  The config is identical to a normal RGB port. They are very bright LEDs so I have the initial value set to 0.1 and you will need to tell the printer how many drivers worth (5 on each) you want to support. 
+The DP5 doesn't have a dedicated RGB port. I have more information on using RGBs coming in a later update that will appear here, but there is a RGB pin you can use to enable the RGBs that are built into the TC-2209-RGB steppers that came with the board.  The config is identical to a normal RGB port. They are very bright LEDs so I have the initial value set to 0.1 and you will need to tell the printer how many drivers worth (5 on each) you want to support. The work great with the LED Effects setup that is standard for the 3 LED Stealthburner configuration. Just change the number of LEDs in the `chain_count` setting and it should be fine.
 
 This config is used with the LED Effects part of the regular Voron configuration. I did not include that in my writeup.
 
@@ -198,6 +202,39 @@ initial_RED: 0.0
 initial_GREEN: 0.1
 initial_BLUE: 0.0
 ```
+
+Having no dedicated RGB port didn't disuade me from putting RGB LEDs on the printer. I used the BLTouch connector for this. I had previously mounted 1 19-led string LEDs to the back of each of the front extrusions. As each of these LED strands has their own 3 conductor wire, I used the Data lines on the BLTouch gpio pins, GND from the BLTouch port, and then a Wago to link the +5v from each LED strand to the BLTouch +5v pin. I included a captioned screenshot of the BLTouch port.  Green is the gpio pin used for the Data line on the LEDs, and the Red and Black are the +5v/GND connections. 
+
+![alt text](<pictures/bltouch LEDs.png>)
+
+The configuration for the LEDs is below:
+
+```
+[neopixel rgb2]
+pin: PB5
+chain_count: 19
+color_order: GRB
+initial_RED: 0.0
+initial_GREEN: 0.1
+initial_BLUE: 0.0
+
+[neopixel rgb3]
+pin: PA8
+chain_count: 19
+color_order: GRB
+initial_RED: 0.0
+initial_GREEN: 0.1
+initial_BLUE: 0.0
+```
+
+I added these 2 neopixel entries to the Stealthburner config I use with LED Effects and they are effectively added to the chain of LEDs on the TC2209-RGB drivers. For me, that means 25 + 19 + 19 RGB LEDs.
+
+## White "chamber" leds
+
+This setup was really straightfoward. I taped a length of 3mm small white 5v LEDs to the underside of the lower top extrusions. The upper extrusions didn't have enough clearance for them and I didn't want to print anything to angle them off the top extrusion. This works for me :-)  
+
+At any rate, I just used the X-stop plug for powering them.  The endstop ports on the DP5 all have a data pin, GND, and 5V so it was an easy choice to use one of them. I made a 3 pin JST connector that only has the pins on the 5v and GND pins. This way the white LEDs are on with then DP5 has power. Of course that means they are only off if I unplug the DP5. You can see the X-Stop port in the picture above below the BLTouch connector.
+
 
 ## BTT Mini 12864 display
 The Mini-12864 display is one that I had on hand and wanted to see if it would work. It does.
