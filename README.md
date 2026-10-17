@@ -47,7 +47,7 @@ The CAN interface on the DP5 doesn't expose 24v like the EBB36 I have needs. So 
     
 I made a pigtail. In the picture below, the pigtail is shown. The red box shows where I pulled 24V/GND, and the green box is the 4 pin CAN H/L connector. The CAN connector is is a 4 pin JST, but I only used the 2 CAN H/L pins. All 4 of those connections go to a Microfit connector that then heads to a 4 pin parallel clip connector. This connector is shown in the second picture. I was luck that the ferrules fit into one side so I didn't have to remove them. 
 
-<img src="pictures/pigtail.jpg" width=35% height=35% alt="pigtail for CAN">  <img src="pictures/connector.jpg" width=35% height=35% alt="not quite a Wago but it works">
+<img src="pictures/pigtail.jpg" width=40% height=40% alt="pigtail for CAN">  <img src="pictures/connector.jpg" width=40% height=40% alt="not quite a Wago but it works">
 
 This the connectors all in place I fired everything up and luckily this worked on the first attempt. I was surprised. The back panel of the printer now has only the DP5. No pi, no U2C, no PSU.  Just the DP5.  
 
