@@ -31,9 +31,26 @@ The DP5 has 5 independent drivers, but only 4 of them support Diag pins and can 
 ## Flashing the board
 My copy of the DP5 came with katapult flashed on the board already. I was able to follow Esoterical's documentation for flashing the board as he has the info for the DP5 already there. It's not very different from the SKR Pico, so flashing it was extremely simple. Once I had the board flashed, I was able to start the process os systematically unplugging from the Pico and then plugging right into the DP5.
 
-If, on thechance your board does not come pre-flashed with katapult, you can use Esoterical's CANBUS guide to flash the board. Start here and follow his instructions. It's a good guide and should get you going. [Mainboard Flashing](https://canbus.esoterical.online/mainboard_flashing.html)
+If, on the chance your board does not come pre-flashed with katapult, you can use Esoterical's CANBUS guide to flash the board. Start here and follow his instructions. It's a good guide and should get you going. [Mainboard Flashing](https://canbus.esoterical.online/mainboard_flashing.html)
 
 The information for how to configure katapult and klipper are shown here: [Configuration for Katapult/Klipper compilation](https://canbus.esoterical.online/mainboard_flashing/common_hardware/Mellow%20Fly-D5P/README.html)
+
+[EDIT: A few hours later...]
+So I decided I wanted even less things on the back of the printer. Right now the only electronic device on the back panel of the printer is the DP5. I used Esoterical's guide to put CAN on the controller, and it just worked. But...
+
+It's a big *but*...
+
+The CAN interface on the DP5 doesn't expose 24v like the EBB36 I have needs. So I had some decisions to make. Here's my decision making for this change to the printer.
+
+    - I have a good, working CAN cable with jacketted ferrules on the ends that I use to connect to the screw terminals on the U2C that I previously was using on the printer. I don't want to shorten that cable any more than it is so I didn't want to lose the ferrules.
+    - The CAN connector on the DP5 does not expose 24V so I have to get that from somewhere else. Thankfully there are 2 ports conveneintly placed in the middle of the ports.
+    
+I made a pigtail. In the picture below, the pigtail is shown. The red box shows where I pulled 24V/GND, and the green box is the 4 pin CAN H/L connector. The CAN connector is is a 4 pin JST, but I only used the 2 CAN H/L pins. All 4 of those connections go to a Microfit connector that then heads to a 4 pin parallel clip connector. This connector is shown in the second picture. I was luck that the ferrules fit into one side so I didn't have to remove them. 
+
+<img src="pictures/pigtail.jpg" width=35% height=35% alt="pigtail for CAN">  <img src="pictures/connector.jpg" width=35% height=35% alt="not quite a Wago but it works">
+
+This the connectors all in place I fired everything up and luckily this worked on the first attempt. I was surprised. The back panel of the printer now has only the DP5. No pi, no U2C, no PSU.  Just the DP5.  
+
 
 ## Replacing the board
 When I went to replace the Pico with the DP5 I tried to be as plug and play as possible. I left the Pico in it's place and put plugs in the ports that matched on the DP5.
