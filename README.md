@@ -6,6 +6,8 @@ It comes with 5 TC2209-RGB drivers that have 5 RGB LEDs on them each. It came wi
 
 The Mellow Fly DP5 is a small, 5 independent driver MCU board comparible to the SKR Pico board used frequently in the Voron V0. It is a bit larger than the Pico but comes with not only CAN on board, but also support for the normal 12864 remote display. The DP5 does not have a dedicated RGB port if you are looking for that. The built in RGB for the Drivers replaces that.  More on that setup later.
 
+<img src="pictures/dp5.webp" width=40% height=40% alt="Pic of fly dp5">  <img src="pictures/fly-dp5-pins.svg" width=40% height=40% alt="connector names and pins">
+
 Here is a picture showing the size comparison with a Pico and a Pi and the DP5. The DP5 is only slightly bigger than the other 2. I feel that using the onboard CAN interface will make a huge difference in the amount of room available on the back of the printer. Especially since I use an external host and not a Pi.
 
 ![Pi, Pic, and DP5](<pictures/size comparison.jpg>)
