@@ -22,7 +22,7 @@ Keep in mind, this writeup is my personal implementation of the Mellow Fly DP5 b
 
     V0.2-ish printer I got used in a box in pieces
     Tulip gantry  (Hi Drifty)
-    Intel Nuc host -> BTT U2C board -> EBB36 CAN setup  [Edit] I have since changed to Bridge mode - no U2C now.
+    Intel Nuc host -> DP5 (using CAN Bridge mode) -> EBB36 CAN setup
     Mellow Fly DP5 controller replacing an SKR Pico that came with the parts
 
 There is nothing wrong with the Pico, I just saw the DP5 and wanted to test it. So far I like it.
@@ -30,31 +30,32 @@ There is nothing wrong with the Pico, I just saw the DP5 and wanted to test it. 
 
 # Replacement process
 ## Important Information
-The DP5 has 5 independent drivers, but only 4 of them support Diag pins and can be used with sensorless homing. The default config assumes that  you are using stepper drivers 0, 1, and 2 for X, Y, and Z steppers.
+The DP5 has 5 independent drivers, but only 4 of them support Diag pins and can be used with sensorless homing (stepper driver 4 does not have a diag pin). The diag pins are labelled 1 through 4 but correspond to drivers 0 through 3. I'm not sure why that was done, but it threw me off for a moment looking at it. Also note that diag4 is next to the driver, not along side the others. The default config assumes that  you are using stepper drivers 0, 1, and 2 for X, Y, and Z steppers.
 
 ## Flashing the board
-My instance of the DP5 came with katapult flashed on the board already. I was able to follow Esoterical's documentation for flashing the board as he has the info for the DP5 already there. It's not very different from the SKR Pico, so flashing it was extremely simple. Once I had the board flashed, I was able to start the process os systematically unplugging from the Pico and then plugging right into the DP5.
+### USB mode
+My copy of the DP5 came with katapult flashed on the board already. I was able to follow Esoterical's documentation for flashing the board with klipper as he has the info for the DP5 already there. It's not very different from the SKR Pico, so flashing it was extremely simple. Once I had the board flashed, I was able to start the process of systematically unplugging from the Pico and then plugging right into the DP5.
 
 If, on the chance your board does not come pre-flashed with katapult, you can use Esoterical's CANBUS guide to flash the board. Start here and follow his instructions. It's a good guide and should get you going. [Mainboard Flashing](https://canbus.esoterical.online/mainboard_flashing.html)
 
 The information for how to configure katapult and klipper are shown here: [Configuration for Katapult/Klipper compilation](https://canbus.esoterical.online/mainboard_flashing/common_hardware/Mellow%20Fly-D5P/README.html)
 
-[EDIT: A few hours later...]
-So I decided I wanted even less things on the back of the printer. Right now the only electronic device on the back panel of the printer is the DP5. I used Esoterical's guide to put CAN on the controller, and it just worked. I ran through Esoterical's CAN setup from the beginning just to make sure I didn't miss anything. You should also always do that. His guide is truly amazing and very accurate. But...
+My setup initially consisted of a U2C connection to the toolhead (EBB36). As I was just testing the DP5 I didn't want to mess with the toolhead connectivity so I left the setup for that alone. The new board worked well, and printed successfully several times.
+
+### CAN Bridge Mode
+Since I had decided to test the new board as much as I felt would be helpful, I decided to attempt to configure CAN using the CAN Bridge mode connector on the DP5. I used Esoterical's guide to put CAN on the controller, and it just worked. I ran through Esoterical's CAN setup from the beginning just to make sure I didn't miss anything. You should also always do that. His guide is truly amazing and very accurate. But...
 
 It's a big *but*...
 
-The CAN interface on the DP5 doesn't expose 24v like the EBB36 I have needs. So I had some decisions to make. Here's my decision making for this change to the printer.
+The CAN interface on the DP5 doesn't expose 24v like the EBB36 I have needs. So I had some decisions to make. I needed 24V to the CAN connector and GND. Since the CAN Bridge connector only says it pushes 5v, I obviously couldn't use that for the EBB26. Since I had a good, working cable connected to the EBB36 I didn't want to affect it if at all possible. I figured if CAN Bridge mode didn't work, I could just go back to the setup before with the U2C.
 
-- I have a good, working CAN cable with jacketted ferrules on the ends that I use to connect to the screw terminals on the U2C that I previously was using on the printer. I don't want to shorten that cable any more than it is so I didn't want to lose the ferrules.
-- The CAN connector on the DP5 does not expose 24V so I have to get that from somewhere else. Thankfully there are 2 ports conveneintly placed in the middle of the ports.
-    
-I made a pigtail. In the picture below, the pigtail is shown. The red box shows where I pulled 24V/GND, and the green box is the 4 pin CAN H/L connector. The CAN connector is is a 4 pin JST, but I only used the 2 CAN H/L pins. All 4 of those connections go to a Microfit connector that then heads to a 4 pin parallel clip connector. This connector is shown in the second picture. I was lucky that the ferrules fit into one side so I didn't have to remove them. 
+I decided to make a pigtail of sorts. I knew I could get 24V from the Ports provided. I knew CAN H/L were on a single port also. So by running 24V/GND from the always on 24v port and CAN H/L from the bridge mode connector, I made a Microfit connector on the other end. So JSTs to Microfit. I then made a temporary microfit connector that I used to take the connections to a 4 line inline connector (like a Wago, but not). You can see if in the picture below. 
+
+In the picture below, the pigtail is shown. The red box shows where I pulled 24V/GND, and the green box is the 4 pin CAN H/L connector. The CAN connector is is a 4 pin JST, but I only used the 2 CAN H/L pins. All 4 of those connections go to a Microfit connector that then heads to a 4 pin parallel clip connector. This connector is shown in the second picture. I was lucky that the ferrules fit into one side so I didn't have to remove them. 
 
 <img src="pictures/pigtail.jpg" width=50% height=50% alt="pigtail for CAN">  <img src="pictures/connector.jpg" width=45% height=45% alt="not quite a Wago but it works">
 
-This the connectors all in place. I fired everything up and luckily this worked on the first attempt. I was surprised. The back panel of the printer now has only the DP5. No pi, no U2C, no PSU.  Just the DP5.  
-
+This the connectors all in place. I fired everything up and luckily this worked on the first attempt. I was surprised. The back panel of the printer now has only the DP5. No pi, no U2C, no PSU.  Just the DP5.  This connection with the pigtail allows me to go back to the Pico/U2C if needed. It is janky, but temporary.
 
 ## Replacing the board
 When I went to replace the Pico with the DP5 I tried to be as plug and play as possible. I left the Pico in it's place and put plugs in the ports that matched on the DP5.
@@ -62,7 +63,6 @@ When I went to replace the Pico with the DP5 I tried to be as plug and play as p
 Before plugging in the drivers in their slots, you will need to plug the motors in because the heat sinks that come with the TC2209-RGB are very large and the plugs can't be plugged in with the drivers in place. 
 
 <img src="pictures/not much room.jpg" width=35% height=35% alt="Not a lot of space for a cable">  <img src="pictures/not much room2.jpg" width=35% height=35% alt="not a lot of space there...">
-
 
 Also I placed the heat sinks on the back side under the LEDs because the tallest part of the driver chip side is the driver itself and the heat sink would be too wobbly in my opinion. I do not think the LEDs will get too hot, and the driver PCB has a heat plane built in so I believe this will work ok.
 
@@ -82,12 +82,10 @@ These are the ports that I used for the various parts of the printer:
     The CAN +24v/GND are plugged into the power port indicated by the callout
     The Z-Endstop switch is plugged into the appropriate port
     The BTT 12864 display that I have connected is plugged into the EXP1/EXP2 ports as expected
-    [Edit] RGB LEDs and white LEDs are now plugged in - RGBs to the BLTouch and white chamber LEDs to the X-Stop port for power
-    [Edit] CAN h/l are now taken from the CAN port and the 120ohm resistor is in place. This let me remove the U2C from the back of the printer.
+    RGB LEDs and white LEDs are now plugged in - RGBs to the BLTouch and white chamber LEDs to the X-Stop port for power
+    CAN h/l are now taken from the CAN port and the 120ohm resistor is in place. This let me remove the U2C from the back of the printer.
 
-~~I have the CAN for the extruder managed separately so I am not using CAN on the DP5.~~
-
-[Edit] So yah, I am now using the USB-CAN-Gridge mode built into the DP5.  It works very well, and was terribly easy to get configured and working.  I think that from start of the update to finished, connected, and working on the printer it took like 20 minutes. I have editted the list above to reflect changes made since I created the writeup.
+Once I got the U2C removed from the back panel, I decided I needed a proper mount for the DP5 and found one on Printables. I have it in the STLs folder on the github. [DP5 mount](STLs/electronics_din_mellow_dp5_mount.stl)
 
 # Configuration file
 
@@ -132,7 +130,7 @@ aliases:
 ```
 
 ## MCU call out
-This made the rest of the config easier to get correct.  I included the MCU in the config next:
+This made the rest of the config easier to get correct.  The `serial` MCU settings are what are used if you are connected to the DP6 using USB and are not set up for CAN.
 
 ```
 [mcu]
@@ -140,7 +138,7 @@ serial: /dev/serial/by-id/usb-Klipper_stm32f072xb_3B0023000457434630323420-if00
 restart_method: command
 ```
 
-[Edit] Since adding CAN Bridge mode, I had to change this setting. I commented out the USB version of the setting, and replaced it with the CAN version shown below.
+Since adding CAN Bridge mode, I had to change this setting. I commented out the USB version of the setting, and replaced it with the CAN version shown below. You will use one of these 2 settings, but not both or klipper with barf at you.
 
 ```
 [mcu]
@@ -297,3 +295,4 @@ gcode:
 # Thanks
 - Xiar for the information I couldn't locate.
 - ZeroTacos for telling me I should write this up.
+- Drifty, Bomtarnes, Piortk and others on the Voron discord for proofreading. Appreciate you.
