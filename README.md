@@ -47,31 +47,31 @@ Since I had decided to test the new board as much as I felt would be helpful, I 
 
 It's a big *but*...
 
-The CAN interface on the DP5 doesn't expose 24v like the EBB36 I have needs. So I had some decisions to make. I needed 24V to the CAN connector and GND. Since the CAN Bridge connector only says it pushes 5v, I obviously couldn't use that for the EBB26. Since I had a good, working cable connected to the EBB36 I didn't want to affect it if at all possible. I figured if CAN Bridge mode didn't work, I could just go back to the setup before with the U2C.
+The CAN interface on the DP5 doesn't expose 24v like the EBB36 I have needs. So I had some decisions to make. I needed 24V to the CAN connector and GND. Since the CAN Bridge connector only says it pushes 5v, I obviously couldn't use that for the EBB36. Since I had a good, working cable connected to the EBB36 I didn't want to affect it if at all possible. I figured if CAN Bridge mode didn't work, I could just go back to the setup before with the U2C.
 
-I decided to make a pigtail of sorts. I knew I could get 24V from the Ports provided. I knew CAN H/L were on a single port also. So by running 24V/GND from the always on 24v port and CAN H/L from the bridge mode connector, I made a Microfit connector on the other end. So JSTs to Microfit. I then made a temporary microfit connector that I used to take the connections to a 4 line inline connector (like a Wago, but not). You can see if in the picture below. 
+I decided to make a pigtail of sorts. I knew I could get 24V from the Ports provided. I knew CAN H/L were on a single port also. So by running 24V/GND from the always on 24v port and CAN H/L from the bridge mode connector, I made a Microfit connector on the other end. So JSTs to Microfit. I then made a temporary microfit connector that I used to take the connections to a 4 line inline connector (like a Wago, but not). You can see it in the picture below. 
 
-In the picture below, the pigtail is shown. The red box shows where I pulled 24V/GND, and the green box is the 4 pin CAN H/L connector. The CAN connector is is a 4 pin JST, but I only used the 2 CAN H/L pins. All 4 of those connections go to a Microfit connector that then heads to a 4 pin parallel clip connector. This connector is shown in the second picture. I was lucky that the ferrules fit into one side so I didn't have to remove them. 
+So technically it's 2 pigtails. 1 from JSTs on the MCU to a microfit, one from the microfit to the CAN cable. The red box shows where I pulled 24V/GND, and the green box is the 4 pin CAN H/L connector. The CAN connector is is a 4 pin JST (CAN H is green, CAN L is yellow), but I only used the 2 CAN H/L pins. All 4 of those connections go to a Microfit connector that then heads to a 4 pin parallel clip connector. This connector is shown in the second picture. I was lucky that the ferrules fit into one side so I didn't have to remove them. 
 
-<img src="pictures/pigtail.jpg" width=50% height=50% alt="pigtail for CAN">  <img src="pictures/connector.jpg" width=45% height=45% alt="not quite a Wago but it works">
+<img src="pictures/pigtail.jpg" width=50% height=50% alt="pigtail for CAN">  <img src="pictures/connector.jpg" width=50% height=50% alt="not quite a Wago but it works">
 
-This the connectors all in place. I fired everything up and luckily this worked on the first attempt. I was surprised. The back panel of the printer now has only the DP5. No pi, no U2C, no PSU.  Just the DP5.  This connection with the pigtail allows me to go back to the Pico/U2C if needed. It is janky, but temporary.
+With the connectors all in place I fired everything up and luckily it worked on the first attempt. I was surprised. The back panel of the printer now has only the DP5. No pi, no U2C, no PSU.  Just the DP5.  This connection with the pigtail allows me to go back to the Pico/U2C if needed. It is janky, but temporary.
 
 ## Replacing the board
-When I went to replace the Pico with the DP5 I tried to be as plug and play as possible. I left the Pico in it's place and put plugs in the ports that matched on the DP5.
+When I went to replace the Pico with the DP5 I tried to be as plug and play as possible. I left the Pico in it's place and pulled a plug from the Pico and put it in the corresponding DP5 port. That way I didn't miss something.
 
 Before plugging in the drivers in their slots, you will need to plug the motors in because the heat sinks that come with the TC2209-RGB are very large and the plugs can't be plugged in with the drivers in place. 
 
-<img src="pictures/not much room.jpg" width=35% height=35% alt="Not a lot of space for a cable">  <img src="pictures/not much room2.jpg" width=35% height=35% alt="not a lot of space there...">
+<img src="pictures/not much room.jpg" width=45% height=45% alt="Not a lot of space for a cable">  <img src="pictures/not much room2.jpg" width=45% height=45% alt="not a lot of space there...">
 
 Also I placed the heat sinks on the back side under the LEDs because the tallest part of the driver chip side is the driver itself and the heat sink would be too wobbly in my opinion. I do not think the LEDs will get too hot, and the driver PCB has a heat plane built in so I believe this will work ok.
 
-<img src="pictures/2209front.jpg" width=35% height=35% alt="Front of 2209-RGB">  <img src="pictures/2209back.jpg" width=35% height=35% alt="back of 2209-RGB">
+<img src="pictures/2209front.jpg" width=45% height=45% alt="Front of 2209-RGB">  <img src="pictures/2209back.jpg" width=45% height=45% alt="back of 2209-RGB">
 
 ## Ports used on the DP5
 These are the ports that I used for the various parts of the printer:
 
-<img src="pictures/Ports Used.png" width=75% height=35% alt="Ports used on my v0">
+<img src="pictures/Ports Used.png" width=85% height=45% alt="Ports used on my v0">
 
     B motor is plugged into stepper 0 with Diag1 jumpered
     A motor is plugged into stepper 1 with Diag2 jumpered
@@ -132,6 +132,7 @@ aliases:
 ## MCU call out
 This made the rest of the config easier to get correct.  The `serial` MCU settings are what are used if you are connected to the DP6 using USB and are not set up for CAN.
 
+### USB
 ```
 [mcu]
 serial: /dev/serial/by-id/usb-Klipper_stm32f072xb_3B0023000457434630323420-if00
@@ -140,6 +141,7 @@ restart_method: command
 
 Since adding CAN Bridge mode, I had to change this setting. I commented out the USB version of the setting, and replaced it with the CAN version shown below. You will use one of these 2 settings, but not both or klipper with barf at you.
 
+### CAN
 ```
 [mcu]
 canbus_uuid: 4a679170359e
