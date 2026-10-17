@@ -1,24 +1,22 @@
 # Mellow-Fly-DP5
 ![err - the board in question](<pictures/dp5 with 2209.avif>)
 
-The board I am using in my v0.2 printer [Mellow Fly -DP5](https://www.aliexpress.us/item/3256806079050403.html)
+The board I am currently using in my v0.2 printer is a [Mellow Fly -DP5](https://www.aliexpress.us/item/3256806079050403.html)
 It comes with 5 TC2209-RGB drivers that have 5 RGB LEDs on them each. It came with 5 heat sinks for the drivers as well.
 
 The Mellow Fly DP5 is a small, 5 independent driver MCU board comparible to the SKR Pico board used frequently in the Voron V0. It is a bit larger than the Pico but comes with not only CAN on board, but also support for the normal 12864 remote display. The DP5 does not have a dedicated RGB port if you are looking for that. The built in RGB for the Drivers replaces that.  More on that setup later.
 
 <img src="pictures/dp5.webp" alt="Pic of fly dp5">
-Picture of Fly DP5
 
 <img src="pictures/FLY-DP5-pins.jpg" alt="connector names and pins">
-Fly DP5 connectors
 
 Here is a picture showing the size comparison with a Pico and a Pi and the DP5. The DP5 is only slightly bigger than the other 2. I feel that using the onboard CAN interface will make a huge difference in the amount of room available on the back of the printer. Especially since I use an external host and not a Pi. One thing to note on the DP5 is that the connectors are all top-in plugs while the Pico are side-in plugs for most things. This will help offset the added footprint for the connectors.
 
 ![Pi, Pic, and DP5](<pictures/size comparison.jpg>)
 
-As for a difference in cost, the set I got from Ali Express (link above) cost me right at $30 but included the 2209 driver step sticks. The DP5 does support other driver types - Mellow also has 2240 drivers in the same form factor on their site for sale. The 2209 drivers are listed for close to $3 per stick, while the 2240s are a little more than double that.
+As for a difference in cost, the set I got from Ali Express (link above) cost me right at $30 but included the 2209 driver step sticks. The DP5 does support other driver types - Mellow also has 2240 drivers in the same form factor on their site for sale. The 2209 drivers are listed for close to $3 per stick, while the 2240s are a little more than double that. 
 
-One feature that I like on the DP5 over the Pico is that the drivers are all separate. The pico has 2 Z motor ports on the same stepper - like most Ender style boards do. This means the DP5 can handle 5 totally independent motors where the pico cannot.
+One feature that I like on the DP5 over the Pico is that the drivers are all separate. The pico has 2 Z motor ports on the same stepper - like most Ender style boards do. This means the DP5 can handle 5 totally independent motors where the pico cannot. Also, the drivers being sticks instead of soldered (like on the Pico) means that if you let the magic smoke out of one of the drivers, you can easily replace it.
 
 Keep in mind, this writeup is my personal implementation of the Mellow Fly DP5 board. I guarantee you it will not be like yours, but you are free to use the information to assist you in implementing it on your printer. My setup is as follows:
 
@@ -35,14 +33,14 @@ There is nothing wrong with the Pico, I just saw the DP5 and wanted to test it.
 The DP5 has 5 independent drivers, but only 4 of them support Diag pins and can be used with sensorless homing. The default config assumes that  you are using stepper drivers 0, 1, and 2 for X, Y, and Z steppers.
 
 ## Flashing the board
-My copy of the DP5 came with katapult flashed on the board already. I was able to follow Esoterical's documentation for flashing the board as he has the info for the DP5 already there. It's not very different from the SKR Pico, so flashing it was extremely simple. Once I had the board flashed, I was able to start the process os systematically unplugging from the Pico and then plugging right into the DP5.
+My instance of the DP5 came with katapult flashed on the board already. I was able to follow Esoterical's documentation for flashing the board as he has the info for the DP5 already there. It's not very different from the SKR Pico, so flashing it was extremely simple. Once I had the board flashed, I was able to start the process os systematically unplugging from the Pico and then plugging right into the DP5.
 
 If, on the chance your board does not come pre-flashed with katapult, you can use Esoterical's CANBUS guide to flash the board. Start here and follow his instructions. It's a good guide and should get you going. [Mainboard Flashing](https://canbus.esoterical.online/mainboard_flashing.html)
 
 The information for how to configure katapult and klipper are shown here: [Configuration for Katapult/Klipper compilation](https://canbus.esoterical.online/mainboard_flashing/common_hardware/Mellow%20Fly-D5P/README.html)
 
 [EDIT: A few hours later...]
-So I decided I wanted even less things on the back of the printer. Right now the only electronic device on the back panel of the printer is the DP5. I used Esoterical's guide to put CAN on the controller, and it just worked. But...
+So I decided I wanted even less things on the back of the printer. Right now the only electronic device on the back panel of the printer is the DP5. I used Esoterical's guide to put CAN on the controller, and it just worked. I ran through Esoterical's CAN setup from the beginning just to make sure I didn't miss anything. You should also always do that. His guide is truly amazing and very accurate. But...
 
 It's a big *but*...
 
@@ -53,7 +51,7 @@ The CAN interface on the DP5 doesn't expose 24v like the EBB36 I have needs. So 
     
 I made a pigtail. In the picture below, the pigtail is shown. The red box shows where I pulled 24V/GND, and the green box is the 4 pin CAN H/L connector. The CAN connector is is a 4 pin JST, but I only used the 2 CAN H/L pins. All 4 of those connections go to a Microfit connector that then heads to a 4 pin parallel clip connector. This connector is shown in the second picture. I was lucky that the ferrules fit into one side so I didn't have to remove them. 
 
-<img src="pictures/pigtail.jpg" width=40% height=40% alt="pigtail for CAN">  <img src="pictures/connector.jpg" width=40% height=40% alt="not quite a Wago but it works">
+<img src="pictures/pigtail.jpg" width=50% height=50% alt="pigtail for CAN">  <img src="pictures/connector.jpg" width=45% height=45% alt="not quite a Wago but it works">
 
 This the connectors all in place. I fired everything up and luckily this worked on the first attempt. I was surprised. The back panel of the printer now has only the DP5. No pi, no U2C, no PSU.  Just the DP5.  
 
@@ -64,7 +62,6 @@ When I went to replace the Pico with the DP5 I tried to be as plug and play as p
 Before plugging in the drivers in their slots, you will need to plug the motors in because the heat sinks that come with the TC2209-RGB are very large and the plugs can't be plugged in with the drivers in place. 
 
 <img src="pictures/not much room.jpg" width=35% height=35% alt="Not a lot of space for a cable">  <img src="pictures/not much room2.jpg" width=35% height=35% alt="not a lot of space there...">
-
 
 
 Also I placed the heat sinks on the back side under the LEDs because the tallest part of the driver chip side is the driver itself and the heat sink would be too wobbly in my opinion. I do not think the LEDs will get too hot, and the driver PCB has a heat plane built in so I believe this will work ok.
@@ -85,8 +82,12 @@ These are the ports that I used for the various parts of the printer:
     The CAN +24v/GND are plugged into the power port indicated by the callout
     The Z-Endstop switch is plugged into the appropriate port
     The BTT 12864 display that I have connected is plugged into the EXP1/EXP2 ports as expected
+    [Edit] RGB LEDs and white LEDs are now plugged in - RGBs to the BLTouch and white chamber LEDs to the X-Stop port for power
+    [Edit] CAN h/l are now taken from the CAN port and the 120ohm resistor is in place. This let me remove the U2C from the back of the printer.
 
-I have the CAN for the extruder managed separately so I am not using CAN on the DP5.
+~~I have the CAN for the extruder managed separately so I am not using CAN on the DP5.~~
+
+[Edit] So yah, I am now using the USB-CAN-Gridge mode built into the DP5.  It works very well, and was terribly easy to get configured and working.  I think that from start of the update to finished, connected, and working on the printer it took like 20 minutes. I have editted the list above to reflect changes made since I created the writeup.
 
 # Configuration file
 
@@ -137,6 +138,13 @@ This made the rest of the config easier to get correct.  I included the MCU in t
 [mcu]
 serial: /dev/serial/by-id/usb-Klipper_stm32f072xb_3B0023000457434630323420-if00
 restart_method: command
+```
+
+[Edit] Since adding CAN Bridge mode, I had to change this setting. I commented out the USB version of the setting, and replaced it with the CAN version shown below.
+
+```
+[mcu]
+canbus_uuid: 4a679170359e
 ```
 
 ## Main Config changes
